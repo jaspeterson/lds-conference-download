@@ -21,12 +21,12 @@ def random_wait():
     time.sleep((randint(1, 5) * 0.1))
 
 
-def get_talk(link, directory, author):
+def get_talk(link, directory, author, talkName):
     talkPage = requests.get(link, headers=headers)
     talkSoup = BeautifulSoup(talkPage.content, 'html.parser')
     title = get_talk_title(talkSoup)
     text = get_talk_text(talkSoup, title, author)
-    fileName = directory + "/" + title + " - " + author + ".txt"
+    fileName = directory + "/" + talkName + ".txt"
     talkFile = open(fileName, "w+")
     talkFile.write(text)
     talkFile.close()
@@ -37,21 +37,24 @@ def get_talk_title(soup):
 
 
 def get_talk_text(soup, title, author):
-    totalText = title + " - " + author + "\n\n"
+    totalText = title + "\n" + author + "\n\n"
     for paragraph in soup.find("div", class_="body-block").find_all("p"):
         totalText += paragraph.get_text() + "\n\n"
     return totalText
 
 
-def get_all_talks(link, currDir):
+def get_all_talks(link, currDir, session):
     conferencePage = requests.get(link, headers=headers)
     conferenceSoup = BeautifulSoup(conferencePage.content, 'html.parser')
+    index = 0
     for element in conferenceSoup.find_all("a", class_="lumen-tile__link"):
         ref = element['href']
         author = element.find(
             "div", class_="lumen-tile__content").string
+        talkName = str(index) + "_" + session
         random_wait()
-        get_talk(root + ref, currDir, author)
+        get_talk(root + ref, currDir, author, talkName)
+        index += 1
 
 
 page = requests.get(url, headers=headers)
@@ -66,4 +69,4 @@ for element in soup.find_all("a", class_="year-line__link"):
         currDirectory = path + search.group() + "/"
         os.mkdir(currDirectory)
         print (search.group() + " - ", (time.time() - startTime), "s")
-        get_all_talks(root + ref, currDirectory)
+        get_all_talks(root + ref, currDirectory, search.group())
