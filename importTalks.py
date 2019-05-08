@@ -25,7 +25,7 @@ def get_talk(link, fileName, author):
     talkSoup = BeautifulSoup(talkPage.content, 'html.parser')
     title = get_talk_title(talkSoup)
     text = get_talk_text(talkSoup, title, author)
-    #fileName = directory + "/" + title + " - " + author + ".txt"
+    fileName = directory + "/" + title + " - " + author + ".txt"
     talkFile = open(fileName, "w+")
     talkFile.write(text)
     talkFile.close()
@@ -38,16 +38,8 @@ def get_talk_title(soup):
 def get_talk_text(soup, title, author):
     totalText = title + " - " + author + "\n\n"
     for paragraph in soup.find("div", class_="body-block").find_all("p"):
-        totalText += paragraph.get_text()
-        '''
-        if paragraph.find("a") != None:
-            for scripture in paragraph.find_all("a"):
-                totalText += " " + scripture.string
-        '''
-        totalText += "\n\n"
+        totalText += paragraph.get_text() + "\n\n"
     return totalText
-    # get all the 'p' elements in the 'div' class_="body-block"
-    # check if the 'p' contains an 'a' class_="scripture-ref" --- get string and append to end of paragraph
 
 
 def get_all_talks(link, currDir):
