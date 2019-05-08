@@ -7,6 +7,7 @@ import os
 import time
 from random import randint
 
+startTime = time.time()
 root = "https://www.lds.org"
 url = "https://www.lds.org/general-conference/conferences?lang=eng"
 headers = {
@@ -17,10 +18,10 @@ os.mkdir(path)
 
 
 def random_wait():
-    time.sleep((randint(1, 10) * 0.1))
+    time.sleep((randint(1, 5) * 0.1))
 
 
-def get_talk(link, fileName, author):
+def get_talk(link, directory, author):
     talkPage = requests.get(link, headers=headers)
     talkSoup = BeautifulSoup(talkPage.content, 'html.parser')
     title = get_talk_title(talkSoup)
@@ -49,9 +50,7 @@ def get_all_talks(link, currDir):
         ref = element['href']
         author = element.find(
             "div", class_="lumen-tile__content").string
-        print(author)
         random_wait()
-        print("talk")
         get_talk(root + ref, currDir, author)
 
 
@@ -66,4 +65,5 @@ for element in soup.find_all("a", class_="year-line__link"):
     if search != None:
         currDirectory = path + search.group() + "/"
         os.mkdir(currDirectory)
+        print (search.group() + " - ", (time.time() - startTime), "s")
         get_all_talks(root + ref, currDirectory)
