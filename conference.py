@@ -8,21 +8,11 @@ import progressbar
 
 from importTalks import get_all_talks_from_conf, get_talk, ROOT
 
-# check path for directory
-# create/enter
-# start sequential conference download
-#   check for conference directory
-#   begin talk download
-#       check for talk
-
-STARTING_CONF_YEAR = 1971
-START_TIME = time.time()
-
 def random_wait():
     time.sleep((randint(1, 5) * 0.1))
 
 def download_conference(year, conf, path):
-    print("Downloading ", year, " - ", conf, "...\n")
+    print("Downloading ", year, " - ", conf, "...")
     path += "/" + year + "-" + conf
     if not os.path.exists(path):
         os.mkdir(path)
@@ -47,12 +37,3 @@ def format_title(title, author):
     author = author.removeprefix("By ")
     formatted = title + "_" + author
     return formatted.replace(" ", "_")
-
-
-dir = os.getcwd()
-if len(sys.argv) > 1:
-    dir += "/" + sys.argv[1]
-else:
-    dir += "/download"
-
-print("Starting Download...\n")
