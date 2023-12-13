@@ -1,15 +1,9 @@
 #!/usr/bin/env python3
 
-from site import USER_BASE
 from bs4 import BeautifulSoup, NavigableString
 import requests
-import re
-import os
-import time
 from random import randint
 
-STARTING_CONF_YEAR = 1971
-START_TIME = time.time()
 ROOT = "https://churchofjesuschrist.org"
 
 USER_AGENTS = [
@@ -21,9 +15,6 @@ USER_AGENTS = [
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.1 Safari/605.1.15',
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 13_1) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.1 Safari/605.1.15'
 ]
-
-def random_wait():
-    time.sleep((randint(1, 5) * 0.1))
 
 def get_random_agent():
     return USER_AGENTS[randint(0, len(USER_AGENTS)-1)]
