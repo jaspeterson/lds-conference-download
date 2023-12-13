@@ -51,7 +51,12 @@ def get_talk(url):
     if body == None:
         return None
     talk.append(talk_soup.find("h1", id="title1").text)
-    talk.append(talk_soup.find("p", id="author1").text)
+    if not talk_soup.find("p", id="author1") == None:
+        talk.append(talk_soup.find("p", id="author1").text)
+    elif not talk_soup.find("p", class_="author-name") == None:
+        talk.append(talk_soup.find("p", class_="author-name").text)
+    else:
+        talk.append("")
 
     for e in body.find_all(text=True):
         if e.parent.name == "sup":

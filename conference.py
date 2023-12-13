@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 
 import os
-import sys
 import time
 from random import randint
-import progressbar
+from progressbar import progressbar
 
 from importTalks import get_all_talks_from_conf, get_talk, ROOT
 
@@ -23,7 +22,7 @@ def download_conference(year, conf, path):
         download_talk_list(talkLinks, path)
 
 def download_talk_list(talks, dirPath):
-    for i in progressbar.progressbar(range(len(talks))):
+    for i in progressbar(range(len(talks))):
         talk = get_talk(ROOT + talks[i])
         if not talk == None:
             fileName = dirPath + "/" + format_title(talk[0], talk[1]) + ".txt"
